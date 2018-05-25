@@ -7,7 +7,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
+
+    @Inject
+    MemberDataManager memberDataManager;
 
     private EditText memberId;
     private Button submitButton;
@@ -20,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         memberId = (EditText) findViewById(R.id.etMemberId);
         submitButton = (Button) findViewById(R.id.btnSubmit);
 
+        App.getApp().getMemberAppComponent().inject(this);
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Member ID is empty", Toast.LENGTH_SHORT).show();
                 } else {
                     String input = memberId.getText().toString();
-                    String result = new MemberDataManager().checkMemberStatus(input);
+                    String result = memberDataManager.checkMemberStatus(input);
                     Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 }
             }
